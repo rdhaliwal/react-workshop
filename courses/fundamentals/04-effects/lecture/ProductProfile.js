@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { Columns, Column } from 'react-flex-columns'
 
@@ -12,14 +12,44 @@ import ShoppingCartButton from 'YesterTech/ShoppingCartButton'
 import { useShoppingCartState } from 'YesterTech/ShoppingCartState'
 import ProductTile from 'YesterTech/ProductTile'
 
+function useProduct(productId) {
+  const [product, setProduct] = useState(null)
+
+  useEffect(() => {
+    let isCurrent = true
+
+    api.products.getProduct(productId).then(fish => {
+      if (isCurrent) setProduct(fish)
+    })
+
+    return () => {
+      isCurrent = false
+    }
+  }, [productId])
+
+  return product
+}
+
 function ProductProfile() {
   let { productId } = useParams()
   productId = parseInt(productId, 10)
 
-  const product = null
+  let product = useProduct(productId)
+
+  // let someRef = useRef()
+
+  // api.products.getProduct(id)
+
+  // useEffect(() => {
+  //   if (someRef.current) someRef.current.innerHTML = 'cake'
+  // }, [])
 
   // Cart
-  const { addToCart, updateQuantity, getQuantity } = useShoppingCartState()
+  const {
+    addToCart,
+    updateQuantity,
+    getQuantity,
+  } = useShoppingCartState()
   const quantity = getQuantity(productId)
   if (!product) return <div>Loading...</div>
 
@@ -27,7 +57,11 @@ function ProductProfile() {
     <div className="spacing">
       <Columns gutters>
         <Column>
-          <ProductImage src={product.imagePath} alt={product.name} size={15} />
+          <ProductImage
+            src={product.imagePath}
+            alt={product.name}
+            size={15}
+          />
         </Column>
         <Column flex className="spacing">
           <Heading>{product.name}</Heading>
@@ -43,13 +77,24 @@ function ProductProfile() {
             </Column>
             <Column className="spacing-small">
               <ShoppingCartButton
-                onClick={() => addToCart(productId, product.name, product.price)}
+                onClick={() =>
+                  addToCart(
+                    productId,
+                    product.name,
+                    product.price
+                  )
+                }
                 getQuantity={quantity}
               />
 
               {quantity > 0 && (
                 <div className="align-right">
-                  <Quantity onChange={q => updateQuantity(productId, q)} quantity={quantity} />
+                  <Quantity
+                    onChange={q =>
+                      updateQuantity(productId, q)
+                    }
+                    quantity={quantity}
+                  />
                 </div>
               )}
             </Column>
@@ -66,7 +111,10 @@ function ProductProfile() {
             </Heading>
             <Tiles>
               {product.relatedProducts.map(productId => (
-                <ProductTile key={productId} productId={productId} />
+                <ProductTile
+                  key={productId}
+                  productId={productId}
+                />
               ))}
             </Tiles>
           </div>

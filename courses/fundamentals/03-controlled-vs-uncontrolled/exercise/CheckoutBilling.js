@@ -5,10 +5,30 @@ import Heading from 'YesterTech/Heading'
 
 function CheckoutBilling({ onSubmit }) {
   const [sameAsBilling, setSameAsBilling] = useState(false)
+  const [billingName, setBillingName] = useState('')
+  const [billingAddress, setBillingAddress] = useState('')
+  const [shippingName, setShippingName] = useState('')
+  const [shippingAddress, setShippingAddress] = useState('')
 
   function handleSubmit(event) {
     event.preventDefault()
-    const fields = serializeForm(event.target, { hash: true })
+    let fields
+    if (!sameAsBilling) {
+      fields = {
+        billingName,
+        billingAddress,
+        shippingName,
+        shippingAddress,
+      }
+    } else {
+      fields = {
+        billingName,
+        billingAddress,
+        shippingName: billingName,
+        shippingAddress: billingAddress,
+      }
+    }
+
     onSubmit(fields)
   }
 
@@ -24,11 +44,28 @@ function CheckoutBilling({ onSubmit }) {
         <hr />
         <div className="form-field">
           <label htmlFor="billing:name">Name</label>
-          <input id="billing:name" type="text" name="billingName" autoComplete="off" />
+          <input
+            id="billing:name"
+            type="text"
+            name="billingName"
+            autoComplete="off"
+            defaultValue={billingName}
+            onChange={event => {
+              setBillingName(event.target.value)
+            }}
+          />
         </div>
         <div className="form-field">
           <label htmlFor="billing:address">Address</label>
-          <input id="billing:address" type="text" name="billingAddress" />
+          <input
+            id="billing:address"
+            type="text"
+            name="billingAddress"
+            defaultValue={billingAddress}
+            onChange={event => {
+              setBillingAddress(event.target.value)
+            }}
+          />
         </div>
 
         <Heading as="h2" size={3}>
@@ -39,7 +76,11 @@ function CheckoutBilling({ onSubmit }) {
           <input
             type="checkbox"
             defaultChecked={sameAsBilling}
-            onChange={() => setSameAsBilling(!sameAsBilling)}
+            onChange={() => {
+              let newSameAsBilling = !sameAsBilling
+              setSameAsBilling(newSameAsBilling)
+              console.log(newSameAsBilling)
+            }}
           />{' '}
           Same as Billing
         </label>
@@ -48,11 +89,37 @@ function CheckoutBilling({ onSubmit }) {
 
         <div className="form-field">
           <label htmlFor="shipping:name">Name</label>
-          <input id="shipping:name" type="text" name="shippingName" autoComplete="off" />
+          <input
+            id="shipping:name"
+            type="text"
+            name="shippingName"
+            autoComplete="off"
+            value={
+              sameAsBilling ? billingName : shippingName
+            }
+            onChange={event => {
+              setShippingName(event.target.value)
+            }}
+            disabled={sameAsBilling}
+          />
         </div>
         <div className="form-field">
           <label htmlFor="shipping:address">Address</label>
-          <input id="shipping:address" type="text" name="shippingAddress" autoComplete="off" />
+          <input
+            id="shipping:address"
+            type="text"
+            name="shippingAddress"
+            autoComplete="off"
+            value={
+              sameAsBilling
+                ? billingAddress
+                : shippingAddress
+            }
+            onChange={event => {
+              setShippingAddress(event.target.value)
+            }}
+            disabled={sameAsBilling}
+          />
         </div>
         <hr />
 

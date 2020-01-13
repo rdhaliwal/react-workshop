@@ -13,6 +13,23 @@ function SignupForm({ onSignup }) {
   const [avatarUrl, setAvatarUrl] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
+  // https://reacttraining.com/blog/blog-claps-and-lessons-on-hooks/
+
+  useEffect(() => {
+    let isCurrent = true
+    if (useGitHub && username.length > 5) {
+      api.auth.getGitHubUser(username).then(user => {
+        if (user && isCurrent) {
+          setName(user.name || '')
+          setAvatarUrl(user.avatar_url || '')
+        }
+      })
+    }
+    return () => {
+      isCurrent = false
+    }
+  }, [username, useGitHub])
+
   function handleSubmit(event) {
     event.preventDefault()
     const user = { username, name, password, avatarUrl }
@@ -52,7 +69,9 @@ function SignupForm({ onSignup }) {
               onChange={e => setUsername(e.target.value)}
               value={username}
               type="text"
-              placeholder={useGitHub ? 'GitHub Username' : 'Username'}
+              placeholder={
+                useGitHub ? 'GitHub Username' : 'Username'
+              }
             />
           </div>
           <div className="form-field">
