@@ -3,14 +3,17 @@
 ## Task One: Convert `useState` state to `useReducer`
 
 1. Open `CheckoutBilling.js`.
-2. Use the reducer pattern with `useReducer` to start to migrate the old state into `useReducer`. Start by only migrating `showPassword` just to get started. Here's a template for useReducer if you need it.
+2. Use the reducer pattern with `useReducer` to start to migrate the old state into `useReducer`. Start by only migrating `sameAsBilling` just to get started. Here's a template for useReducer if you need it.
 
 ```js
 const [state, dispatch] = useReducer(
   (state, action) => {
     switch (action.type) {
       case 'TOGGLE_SAME_AS_BILLING':
-        return { ...state, sameAsBilling: !state.sameAsBilling }
+        return {
+          ...state,
+          sameAsBilling: !state.sameAsBilling,
+        }
       default:
         return state
     }
@@ -42,7 +45,11 @@ case 'CHANGE_FIELD': {
 The idea here is that now you can do your dispatches like this where you specify the value AND the field it goes to:
 
 ```js
-dispatch({ type: 'CHANGE_FIELD', field: 'billingName', value: 'Cassidy' })
+dispatch({
+  type: 'CHANGE_FIELD',
+  field: 'billingName',
+  value: 'Cassidy',
+})
 ```
 
 2. You can also add each field to the destructure that we did earlier. Or you can just do this if you want:
