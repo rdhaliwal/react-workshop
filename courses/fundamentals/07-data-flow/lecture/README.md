@@ -31,8 +31,12 @@ function BrowseProductItem({ name, imagePath }) {
       <div>{name}</div>
       <div className="spacing-small">
         <button
-          className={'button' + (quantity > 0 ? ' cta-button' : '')}
-          onClick={() => (quantity === 0 ? setQuantity(1) : null)}
+          className={
+            'button' + (quantity > 0 ? ' cta-button' : '')
+          }
+          onClick={() =>
+            quantity === 0 ? setQuantity(1) : null
+          }
         >
           {quantity === 0 ? (
             'Add To Cart'
@@ -75,7 +79,9 @@ function PrimaryLayout() {
   const [cart, setCart] = useState([])
 
   function addToCart(productId, name, price) {
-    const newCart = cart.concat([{ productId, quantity: 1, name, price }])
+    const newCart = cart.concat([
+      { productId, quantity: 1, name, price },
+    ])
     setCart(newCart)
   }
 
@@ -83,17 +89,24 @@ function PrimaryLayout() {
     let newCart
     if (quantity > 0) {
       newCart = cart.map(product => {
-        return product.productId === productId ? { ...product, quantity } : product
+        return product.productId === productId
+          ? { ...product, quantity }
+          : product
       })
     } else {
-      newCart = cart.filter(product => product.productId !== productId)
+      newCart = cart.filter(
+        product => product.productId !== productId
+      )
     }
     setCart(newCart)
   }
 
   function getQuantity(productId) {
     if (!Array.isArray(cart)) return 0
-    return (cart.find(p => p.productId === productId) || {}).quantity || 0
+    return (
+      (cart.find(p => p.productId === productId) || {})
+        .quantity || 0
+    )
   }
 
   return (
@@ -101,7 +114,9 @@ function PrimaryLayout() {
       <div>
         <header className="primary-header">
           <NavLink to="/products">Products</NavLink>
-          {cart.length > 0 && <NavLink to="/checkout">Checkout</NavLink>}
+          {cart.length > 0 && (
+            <NavLink to="/checkout">Checkout</NavLink>
+          )}
         </header>
         <main className="primary-content">
           <Switch>
@@ -134,7 +149,7 @@ Start by creating a `<ShoppingCart.Provider>` directly inside of `PrimaryLayout`
 
 ```js
 ////////////////////////////////////////////////////
-// This would be it's own file: ShoppingCartState.js
+// This would be its own file: ShoppingCartState.js
 import React, { useState, useContext } from 'react'
 const Context = React.createContext()
 

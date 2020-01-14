@@ -8,13 +8,28 @@ function SignupForm() {
   return (
     <form className="spacing" onSubmit={submit}>
       <div className="form-field">
-        <input aria-label="Full Name" type="text" placeholder="Full Name" required />
+        <input
+          aria-label="Full Name"
+          type="text"
+          placeholder="Full Name"
+          required
+        />
       </div>
       <div className="form-field">
-        <input aria-label="Username" type="text" placeholder="Username" required />
+        <input
+          aria-label="Username"
+          type="text"
+          placeholder="Username"
+          required
+        />
       </div>
       <div className="form-field">
-        <input aria-label="Password" type="password" placeholder="Password" required />
+        <input
+          aria-label="Password"
+          type="password"
+          placeholder="Password"
+          required
+        />
       </div>
       <button className="button block" type="submit">
         Signup

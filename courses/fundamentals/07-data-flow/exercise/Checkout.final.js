@@ -1,5 +1,11 @@
 import React, { useReducer } from 'react'
-import { Switch, Route, Redirect, useRouteMatch, useHistory } from 'react-router-dom'
+import {
+  Switch,
+  Route,
+  Redirect,
+  useRouteMatch,
+  useHistory,
+} from 'react-router-dom'
 import Centered from 'YesterTech/Centered'
 
 // Route Targets
@@ -15,7 +21,11 @@ function Checkout() {
     (state, action) => {
       switch (action.type) {
         case 'SUBMIT_BILLING': {
-          return { ...state, sameAsBilling: action.sameAsBilling, fields: action.fields }
+          return {
+            ...state,
+            sameAsBilling: action.sameAsBilling,
+            fields: action.fields,
+          }
         }
         default:
           return state
@@ -28,7 +38,11 @@ function Checkout() {
   )
 
   function handleBillingSubmit(sameAsBilling, fields) {
-    dispatch({ type: 'SUBMIT_BILLING', sameAsBilling, fields })
+    dispatch({
+      type: 'SUBMIT_BILLING',
+      sameAsBilling,
+      fields,
+    })
     history.push(`${match.path}/review`)
   }
 
@@ -39,11 +53,17 @@ function Checkout() {
           <ViewCart />
         </Route>
         <Route path={`${match.path}/billing`}>
-          <CheckoutBilling onSubmit={handleBillingSubmit} defaultValues={state.fields} />
+          <CheckoutBilling
+            onSubmit={handleBillingSubmit}
+            defaultValues={state.fields}
+          />
         </Route>
         {Object.keys(state.fields).length > 0 && (
           <Route path={`${match.path}/review`}>
-            <CheckoutReview sameAsBilling={state.sameAsBilling} fields={state.fields} />
+            <CheckoutReview
+              sameAsBilling={state.sameAsBilling}
+              fields={state.fields}
+            />
           </Route>
         )}
         <Redirect to={`${match.path}/cart`} />
