@@ -7,7 +7,11 @@ import Quantity from './Quantity'
  * With React Testing Library
  */
 
-import { render, cleanup, fireEvent } from '@testing-library/react'
+import {
+  render,
+  cleanup,
+  fireEvent,
+} from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 describe('Quantity', () => {
@@ -88,7 +92,9 @@ describe('Quantity', () => {
     act(() => {
       ReactDOM.render(<Quantity />, container)
     })
-    const input = container.querySelector('[data-testid="quantity"]')
+    const input = container.querySelector(
+      '[data-testid="quantity"]'
+    )
     expect(input.value).toBe('0')
   })
 
@@ -96,11 +102,17 @@ describe('Quantity', () => {
     act(() => {
       ReactDOM.render(<Quantity />, container)
     })
-    const subtractButton = container.querySelector('[data-testid=subtract-button]')
-    const input = container.querySelector('[data-testid="quantity"]')
+    const subtractButton = container.querySelector(
+      '[data-testid=subtract-button]'
+    )
+    const input = container.querySelector(
+      '[data-testid="quantity"]'
+    )
     expect(input.value).toBe('0')
     act(() => {
-      subtractButton.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      subtractButton.dispatchEvent(
+        new MouseEvent('click', { bubbles: true })
+      )
     })
     expect(input.value).toBe('0')
   })
@@ -109,10 +121,16 @@ describe('Quantity', () => {
     act(() => {
       ReactDOM.render(<Quantity />, container)
     })
-    const addButton = container.querySelector('[data-testid=add-button]')
-    const input = container.querySelector('[data-testid="quantity"]')
+    const addButton = container.querySelector(
+      '[data-testid=add-button]'
+    )
+    const input = container.querySelector(
+      '[data-testid="quantity"]'
+    )
     act(() => {
-      addButton.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      addButton.dispatchEvent(
+        new MouseEvent('click', { bubbles: true })
+      )
     })
     expect(input.value).toBe('1')
   })
@@ -121,14 +139,24 @@ describe('Quantity', () => {
     act(() => {
       ReactDOM.render(<Quantity />, container)
     })
-    const subtractButton = container.querySelector('[data-testid=subtract-button]')
-    const addButton = container.querySelector('[data-testid=add-button]')
-    const input = container.querySelector('[data-testid="quantity"]')
+    const subtractButton = container.querySelector(
+      '[data-testid=subtract-button]'
+    )
+    const addButton = container.querySelector(
+      '[data-testid=add-button]'
+    )
+    const input = container.querySelector(
+      '[data-testid="quantity"]'
+    )
     act(() => {
-      addButton.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      addButton.dispatchEvent(
+        new MouseEvent('click', { bubbles: true })
+      )
     })
     act(() => {
-      subtractButton.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      subtractButton.dispatchEvent(
+        new MouseEvent('click', { bubbles: true })
+      )
     })
     expect(input.value).toBe('0')
   })
@@ -137,9 +165,16 @@ describe('Quantity', () => {
     act(() => {
       ReactDOM.render(<Quantity />, container)
     })
-    const input = container.querySelector('[data-testid="quantity"]')
+    const input = container.querySelector(
+      '[data-testid="quantity"]'
+    )
     act(() => {
-      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }))
+      input.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'ArrowUp',
+          bubbles: true,
+        })
+      )
     })
     expect(input.value).toBe('1')
   })
@@ -148,12 +183,24 @@ describe('Quantity', () => {
     act(() => {
       ReactDOM.render(<Quantity />, container)
     })
-    const input = container.querySelector('[data-testid="quantity"]')
+    const input = container.querySelector(
+      '[data-testid="quantity"]'
+    )
     act(() => {
-      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }))
+      input.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'ArrowUp',
+          bubbles: true,
+        })
+      )
     })
     act(() => {
-      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }))
+      input.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'ArrowDown',
+          bubbles: true,
+        })
+      )
     })
     expect(input.value).toBe('0')
   })

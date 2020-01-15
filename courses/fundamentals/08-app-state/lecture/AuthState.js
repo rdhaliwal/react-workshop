@@ -1,4 +1,8 @@
-import React, { useContext, useReducer, useCallback } from 'react'
+import React, {
+  useContext,
+  useReducer,
+  useCallback,
+} from 'react'
 
 const AuthStateContext = React.createContext()
 
@@ -11,7 +15,11 @@ export function AuthStateProvider({ children }) {
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
       case 'LOGIN': {
-        return { ...state, authenticated: true, user: action.user }
+        return {
+          ...state,
+          authenticated: true,
+          user: action.user,
+        }
       }
       case 'LOGOUT': {
         return { ...initialState }
@@ -26,7 +34,11 @@ export function AuthStateProvider({ children }) {
     dispatch: useCallback(dispatch, []),
   }
 
-  return <AuthStateContext.Provider value={value} children={children} />
+  return (
+    <AuthStateContext.Provider value={value}>
+      {children}
+    </AuthStateContext.Provider>
+  )
 }
 
 export function useAuthState() {

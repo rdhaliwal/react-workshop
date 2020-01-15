@@ -2,18 +2,20 @@ import React, { useState, Fragment } from 'react'
 import Quantity from './Quantity'
 import ProductImage from 'YesterTech/ProductImage'
 import { MdShoppingCart } from 'react-icons/md'
+import { useShoppingCartState } from './ShoppingCartState'
 
 function BrowseProductItem({
   productId,
   name,
   price,
   imagePath,
-  addToCart,
-  getQuantity,
-  updateQuantity,
 }) {
+  let {
+    addToCart,
+    getQuantity,
+    updateQuantity,
+  } = useShoppingCartState()
   const quantity = getQuantity(productId)
-  // const [quantity, setQuantity] = useState(0)
 
   return (
     <div className="browse-product-item">

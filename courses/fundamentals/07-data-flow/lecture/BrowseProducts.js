@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
 import { useProducts } from './utils'
 import BrowseProductItem from './BrowseProductItem'
+import { useShoppingCartState } from './ShoppingCartState'
 
-function BrowseProducts({
-  getCartSize,
-  addToCart,
-  getQuantity,
-  updateQuantity,
-}) {
+function BrowseProducts() {
   const products = useProducts()
+  let { getCartSize } = useShoppingCartState()
 
   return (
     <div className="spacing">
@@ -25,9 +22,6 @@ function BrowseProducts({
               name={product.name}
               price={product.price}
               imagePath={product.imagePath}
-              addToCart={addToCart}
-              getQuantity={getQuantity}
-              updateQuantity={updateQuantity}
             />
           )
         })}

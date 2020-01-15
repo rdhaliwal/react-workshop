@@ -1,5 +1,10 @@
 import React, { useEffect } from 'react'
-import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
+import {
+  Switch,
+  Route,
+  Redirect,
+  useHistory,
+} from 'react-router-dom'
 
 import api from 'YesterTech/api'
 import PrimaryHeader from './PrimaryHeader'
@@ -25,6 +30,18 @@ function PrimaryLayout() {
   // Get the current authenticated user (for first loads and refreshes)
   // api.auth.getAuthenticatedUser()
 
+  useEffect(() => {
+    let isCurrent = true
+    api.auth.getAuthenticatedUser().then(user => {
+      if (user && isCurrent) {
+        dispatch({ type: 'LOGIN', user })
+      }
+    })
+    return () => {
+      isCurrent = false
+    }
+  }, [authenticated, dispatch])
+
   return (
     <div className="primary-layout">
       <div>
@@ -40,16 +57,16 @@ function PrimaryLayout() {
             <Route path="/signup" exact>
               <SignupForm
                 onSignup={user => {
-                  console.log(user)
-                  // dispatch login
+                  dispatch({ type: 'LOGIN', user })
+                  history.push('/')
                 }}
               />
             </Route>
             <Route path="/login" exact>
               <LoginForm
                 onAuthenticated={user => {
-                  console.log(user)
-                  // dispatch login
+                  dispatch({ type: 'LOGIN', user })
+                  history.push('/')
                 }}
               />
             </Route>

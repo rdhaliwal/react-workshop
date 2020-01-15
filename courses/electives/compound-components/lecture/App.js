@@ -122,22 +122,26 @@ function TabPanel({ children }) {
 // https://reacttraining.com/reach-ui/tabs
 
 function App() {
-  // return (
-  //   <Tabs2>
-  //     <TabPanels>
-  //       <TabPanel>
-  //         <LoginForm />
-  //       </TabPanel>
-  //       <TabPanel>
-  //         <SignupForm />
-  //       </TabPanel>
-  //     </TabPanels>
-  //     <TabList>
-  //       <Tab>Login</Tab>
-  //       <Tab disabled>Signup</Tab>
-  //     </TabList>
-  //   </Tabs2>
-  // )
+  return (
+    <Tabs2>
+      <TabList>
+        <Tab>Login</Tab>
+        <Tab>Signup</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel>
+          <LoginForm />
+        </TabPanel>
+        <TabPanel>
+          <SignupForm />
+        </TabPanel>
+      </TabPanels>
+      <TabList>
+        <Tab>Login</Tab>
+        <Tab>Signup</Tab>
+      </TabList>
+    </Tabs2>
+  )
   const tabData = [
     {
       label: 'Login',
