@@ -19,7 +19,7 @@ function PrimaryHeader() {
 
   function handleLogout() {
     api.auth.logout().then(() => {
-      // dispatch logout
+      dispatch({ type: 'LOGOUT' })
     })
   }
 

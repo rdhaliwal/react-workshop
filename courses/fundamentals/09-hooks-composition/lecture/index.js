@@ -4,23 +4,24 @@ import StarRatings from 'YesterTech/StarRatings'
 import Heading from 'YesterTech/Heading'
 import api from 'YesterTech/api'
 
-function useProduct(productId) {
-  const [products, setProducts] = useState(null)
+function useApi(api) {
+  const [results, setResults] = useState(null)
 
   useEffect(() => {
     let isCurrent = true
-    api.products.getProduct(productId).then(products => {
+    api().then(results => {
       if (!isCurrent) return
-      setProducts(products)
+      setResults(results)
     })
     return () => (isCurrent = false)
-  }, [productId])
+  }, [api])
 
-  return products
+  return results
 }
 
 function ProductProfile({ productId }) {
-  const product = useProduct(productId)
+  const getProduct = useCallback(() => api.product.getProduct(productId), [productId])
+  const product = useApi(getProduct)
 
   if (!product) return <div>Loading...</div>
 

@@ -1,17 +1,33 @@
-import React, { useState, Fragment } from 'react'
+import React from 'react'
 import Quantity from './Quantity'
 import ProductImage from 'YesterTech/ProductImage'
-import { MdShoppingCart } from 'react-icons/md'
+import { useShoppingCartState } from './ShoppingCartContext'
 
-function BrowseProductItem({ productId, name, price, imagePath }) {
+function BrowseProductItem({ productId, name, price, imagePath, quantity }) {
+  const { addToCart, updateQuantity } = useShoppingCartState()
+
   return (
     <div className="browse-product-item">
       <ProductImage src={imagePath} size={7} alt={name} />
       <div>{name}</div>
       <div className="spacing-small">
-        <button className="button">Add To Cart</button>
+        <button
+          onClick={() => {
+            addToCart(productId, name, price)
+          }}
+          className="button"
+        >
+          Add To Cart
+        </button>
         <div className="align-right">
-          <Quantity />
+          {quantity > 0 && (
+            <Quantity
+              quantity={quantity}
+              onChange={quantity => {
+                updateQuantity(productId, quantity)
+              }}
+            />
+          )}
         </div>
       </div>
     </div>

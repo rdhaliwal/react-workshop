@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useReducer } from 'react'
 import { FaSignInAlt, FaExclamationCircle } from 'react-icons/fa'
 
 import Heading from 'YesterTech/Heading'
@@ -7,15 +7,37 @@ import Centered from 'YesterTech/Centered'
 import api from 'YesterTech/api'
 
 function LoginForm({ onAuthenticated }) {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
+  const [state, dispatch] = useReducer(
+    (state, action) => {
+      switch (action.type) {
+        case 'LOGIN':
+          return { ...state, loading: true }
+        case 'LOGIN_ERROR':
+          return { ...state, loading: false, error: action.error }
+        case 'USERNAME_CHANGE':
+          return { ...state, username: action.value }
+        case 'PASSWORD_CHANGE':
+          return { ...state, password: action.value }
+        case 'SHOW_PASSWORD_CHANGE':
+          return { ...state, showPassword: !state.showPassword }
+        default:
+          return state
+      }
+    },
+    {
+      error: null,
+      loading: false,
+      username: '',
+      password: '',
+      showPassword: false,
+    }
+  )
+
+  const { error, loading, username, password, showPassword } = state
 
   function handleLogin(event) {
     event.preventDefault()
-    setLoading(true)
+    dispatch({ type: 'LOGIN' })
     api.auth
       .login(username, password)
       .then(user => {
@@ -24,8 +46,7 @@ function LoginForm({ onAuthenticated }) {
         }
       })
       .catch(error => {
-        setError(error)
-        setLoading(false)
+        dispatch({ type: 'LOGIN_ERROR', error })
       })
   }
 
@@ -43,7 +64,7 @@ function LoginForm({ onAuthenticated }) {
         <div className="form-field">
           <input
             aria-label="Username"
-            onChange={e => setUsername(e.target.value)}
+            onChange={e => dispatch({ type: 'USERNAME_CHANGE', value: e.target.value })}
             type="text"
             placeholder="Username"
           />
@@ -51,13 +72,13 @@ function LoginForm({ onAuthenticated }) {
         <div className="form-field">
           <input
             aria-label="Password"
-            onChange={e => setPassword(e.target.value)}
+            onChange={e => dispatch({ type: 'PASSWORD_CHANGE', value: e.target.value })}
             type={showPassword ? 'text' : 'password'}
             placeholder="Password"
           />
           <label>
             <input
-              onChange={() => setShowPassword(!showPassword)}
+              onChange={() => dispatch({ type: 'SHOW_PASSWORD_CHANGE' })}
               defaultChecked={showPassword}
               className="passwordCheckbox"
               type="checkbox"

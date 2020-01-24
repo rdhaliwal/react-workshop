@@ -23,7 +23,7 @@ export function AuthStateProvider({ children }) {
 
   const value = {
     ...state,
-    dispatch: useCallback(dispatch, []),
+    dispatch,
   }
 
   return <AuthStateContext.Provider value={value} children={children} />

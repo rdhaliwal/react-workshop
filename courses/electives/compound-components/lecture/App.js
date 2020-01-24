@@ -4,46 +4,69 @@ import SignupForm from 'YesterTech/SignupForm'
 import 'YesterTech/styles/global-styles.scss'
 import './styles.scss'
 
-function Tabs({ data }) {
+const TabsContext = React.createContext()
+
+function Tabs({ children }) {
   const [activeIndex, setActiveIndex] = useState(0)
 
   return (
-    <div data-reach-tabs>
-      <div data-reach-tab-list>
-        {data.map((tab, index) => {
-          const isActive = index === activeIndex
-          return (
-            <div
-              data-reach-tab
-              key={index}
-              className={isActive ? 'active' : ''}
-              onClick={() => setActiveIndex(index)}
-            >
-              {tab.label}
-            </div>
-          )
-        })}
-      </div>
-      <div data-reach-tab-panels>{data[activeIndex].content}</div>
+    <TabsContext.Provider
+      value={{
+        activeIndex,
+        setActiveIndex,
+      }}
+    >
+      <div data-reach-tabs>{children}</div>
+    </TabsContext.Provider>
+  )
+}
+
+function TabList({ children }) {
+  const { activeIndex, setActiveIndex } = useContext(TabsContext)
+  children = React.Children.map(children, (child, index) => {
+    return React.cloneElement(child, {
+      isActive: index === activeIndex,
+      onClick: () => setActiveIndex(index),
+    })
+  })
+
+  return <div data-reach-tab-list>{children}</div>
+}
+
+function Tab({ children, isActive, onClick }) {
+  return (
+    <div data-reach-tab className={isActive ? 'active' : ''} onClick={onClick}>
+      {children}
     </div>
   )
 }
 
-function App() {
-  const tabData = [
-    {
-      label: 'Login',
-      content: <LoginForm />,
-    },
-    {
-      label: 'Signup',
-      content: <SignupForm />,
-    },
-  ]
+function TabPanels({ children }) {
+  const { activeIndex } = useContext(TabsContext)
+  return <div data-reach-tab-panels>{children[activeIndex]}</div>
+}
 
+function TabPanel({ children }) {
+  return children
+}
+
+function App() {
   return (
     <div>
-      <Tabs data={tabData} />
+      <Tabs>
+        <TabList>
+          <Tab>Login</Tab>
+          <Tab>Signup</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <LoginForm />
+          </TabPanel>
+          <TabPanel>
+            <SignupForm />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
   )
 }

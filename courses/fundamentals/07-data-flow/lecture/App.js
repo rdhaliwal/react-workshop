@@ -2,12 +2,15 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 
 import PrimaryLayout from './PrimaryLayout'
+import ShoppingCartState from './ShoppingCartContext'
 import 'YesterTech/styles/global-styles.scss'
 
 function App() {
   return (
     <BrowserRouter>
-      <PrimaryLayout />
+      <ShoppingCartState>
+        <PrimaryLayout />
+      </ShoppingCartState>
     </BrowserRouter>
   )
 }
