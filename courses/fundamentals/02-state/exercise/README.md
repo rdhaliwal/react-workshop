@@ -14,7 +14,11 @@
   {!sameAsBilling && (
     <div className="form-field">
       <label htmlFor="shipping:name">Name</label>
-      <input id="shipping:name" type="text" name="shippingName" />
+      <input
+        id="shipping:name"
+        type="text"
+        name="shippingName"
+      />
     </div>
   )}
 </div>
