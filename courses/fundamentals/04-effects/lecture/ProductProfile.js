@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { Columns, Column } from 'react-flex-columns'
+import {
+  Columns,
+  Column,
+} from 'react-flex-columns'
 
 import api from 'YesterTech/api'
 import Heading from 'YesterTech/Heading'
@@ -12,14 +15,43 @@ import ShoppingCartButton from 'YesterTech/ShoppingCartButton'
 import { useShoppingCartState } from 'YesterTech/ShoppingCartState'
 import ProductTile from 'YesterTech/ProductTile'
 
+function useProduct(productId) {
+  const [product, setProduct] = useState(null)
+
+  useEffect(() => {
+    let isCurrent = true
+    api.products.getProduct(productId).then(p => {
+      if (isCurrent) setProduct(p)
+    })
+    return () => {
+      isCurrent = false
+    }
+  }, [productId])
+
+  return product
+}
+
 function ProductProfile() {
   let { productId } = useParams()
   productId = parseInt(productId, 10)
 
-  const product = null
+  let product = useProduct(productId)
+
+  useEffect(() => {
+    document.title = product?.name
+  }, [product])
+
+  // [populated] = effect runs whenever `populated` changes
+  //               and also on mount
+  // [] = effect runs on mount
+  // no array = effect runs whenever any state changes
 
   // Cart
-  const { addToCart, updateQuantity, getQuantity } = useShoppingCartState()
+  const {
+    addToCart,
+    updateQuantity,
+    getQuantity,
+  } = useShoppingCartState()
   const quantity = getQuantity(productId)
   if (!product) return <div>Loading...</div>
 
@@ -27,7 +59,11 @@ function ProductProfile() {
     <div className="spacing">
       <Columns gutters>
         <Column>
-          <ProductImage src={product.imagePath} alt={product.name} size={15} />
+          <ProductImage
+            src={product.imagePath}
+            alt={product.name}
+            size={15}
+          />
         </Column>
         <Column flex className="spacing">
           <Heading>{product.name}</Heading>
@@ -37,19 +73,34 @@ function ProductProfile() {
             <Column>
               <div className="text-small">
                 <div>Brand: {product.brand}</div>
-                <div>Category: {product.category}</div>
-                <div>Condition: {product.condition}</div>
+                <div>
+                  Category: {product.category}
+                </div>
+                <div>
+                  Condition: {product.condition}
+                </div>
               </div>
             </Column>
             <Column className="spacing-small">
               <ShoppingCartButton
-                onClick={() => addToCart(productId, product.name, product.price)}
+                onClick={() =>
+                  addToCart(
+                    productId,
+                    product.name,
+                    product.price
+                  )
+                }
                 getQuantity={quantity}
               />
 
               {quantity > 0 && (
                 <div className="align-right">
-                  <Quantity onChange={q => updateQuantity(productId, q)} quantity={quantity} />
+                  <Quantity
+                    onChange={q =>
+                      updateQuantity(productId, q)
+                    }
+                    quantity={quantity}
+                  />
                 </div>
               )}
             </Column>
@@ -65,9 +116,14 @@ function ProductProfile() {
               Related Products
             </Heading>
             <Tiles>
-              {product.relatedProducts.map(productId => (
-                <ProductTile key={productId} productId={productId} />
-              ))}
+              {product.relatedProducts.map(
+                productId => (
+                  <ProductTile
+                    key={productId}
+                    productId={productId}
+                  />
+                )
+              )}
             </Tiles>
           </div>
         </>
