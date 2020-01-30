@@ -1,4 +1,9 @@
-import React, { useState, useContext, createContext, Children } from 'react'
+import React, {
+  useState,
+  useContext,
+  createContext,
+  Children,
+} from 'react'
 import LoginForm from 'YesterTech/LoginForm'
 import SignupForm from 'YesterTech/SignupForm'
 import 'YesterTech/styles/global-styles.scss'
@@ -24,7 +29,9 @@ function Tabs({ data }) {
           )
         })}
       </div>
-      <div data-reach-tab-panels>{data[activeIndex].content}</div>
+      <div data-reach-tab-panels>
+        {data[activeIndex].content}
+      </div>
     </div>
   )
 }

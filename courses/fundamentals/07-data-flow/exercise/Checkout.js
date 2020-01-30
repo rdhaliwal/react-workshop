@@ -1,5 +1,11 @@
-import React from 'react'
-import { Switch, Route, Redirect, useRouteMatch, useHistory } from 'react-router-dom'
+import React, { useReducer } from 'react'
+import {
+  Switch,
+  Route,
+  Redirect,
+  useRouteMatch,
+  useHistory,
+} from 'react-router-dom'
 import Centered from 'YesterTech/Centered'
 
 // To run the final solution: Comment this in and the rest out
@@ -12,11 +18,34 @@ import CheckoutBilling from './CheckoutBilling'
 import CheckoutReview from 'YesterTech/CheckoutReview'
 
 function Checkout() {
+  const [state, dispatch] = useReducer(
+    (state, action) => {
+      switch (action.type) {
+        case 'SUBMIT_BILLING': {
+          return {
+            ...state,
+            sameAsBilling: action.sameAsBilling,
+            fields: action.fields,
+          }
+        }
+      }
+    },
+    {
+      sameAsBilling: false,
+      fields: {},
+    }
+  )
+
   const match = useRouteMatch()
   const history = useHistory()
 
   function handleBillingSubmit(sameAsBilling, fields) {
     console.log(sameAsBilling, fields)
+    dispatch({
+      type: 'SUBMIT_BILLING',
+      sameAsBilling,
+      fields,
+    })
     history.push(`${match.path}/review`)
   }
 
@@ -27,17 +56,20 @@ function Checkout() {
           <ViewCart />
         </Route>
         <Route path={`${match.path}/billing`}>
-          <CheckoutBilling onSubmit={handleBillingSubmit} />
+          <CheckoutBilling
+            onSubmit={handleBillingSubmit}
+            defaultValues={state.fields}
+          />
         </Route>
 
-        {/*
-          Hint: We shouldn't be able to visit this route unless we have
-          values inside of our state for `fields`. See the README
-        */}
-        <Route path={`${match.path}/review`}>
-          {/* The README also tells you what props you need to pass into CheckoutReview */}
-          <CheckoutReview />
-        </Route>
+        {Object.keys(state.fields).length > 0 && (
+          <Route path={`${match.path}/review`}>
+            <CheckoutReview
+              sameAsBilling={state.sameAsBilling}
+              fields={state.fields}
+            />
+          </Route>
+        )}
 
         <Redirect to={`${match.path}/cart`} />
       </Switch>

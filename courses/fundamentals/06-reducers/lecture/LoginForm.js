@@ -28,6 +28,7 @@ let actions = [
   { type: 'MINUS', by: 4 },
   { type: 'EAT_CAKE' },
   { type: 'SET_USER', user: { name: 'john' } },
+  { type: 'ADD', by: 2 },
 ]
 
 function reducer(state, action) {
