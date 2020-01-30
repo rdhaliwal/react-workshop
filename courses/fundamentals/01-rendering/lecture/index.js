@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { FaRegStar, FaStar } from 'react-icons/fa'
 import './styles.scss'
@@ -41,21 +41,50 @@ function printStuff(stuff) {
   console.log('stuff: ' + stuff)
 }
 
+function Pokemon() {
+  const [pokemon, setPokemon] = useState('pikachu')
+  const [img, setImg] = useState('pikachu')
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    document.title = 'saying hello to ' + pokemon
+  }, [pokemon])
+
+  useEffect(() => {
+    let isCurrent = true
+    fetch(`http://pokeapi.co/api/v2/pokemon/${pokemon}`)
+      .then(res => res.json())
+      .then(res => {
+        if (isCurrent) {
+          setImg(res.sprites.front_default)
+        }
+      })
+      .catch(error => {
+        if (isCurrent) setError(error)
+      })
+    return () => {
+      isCurrent = false
+    }
+  }, [pokemon])
+
+  return (
+    <div>
+      <input
+        defaultValue={pokemon}
+        onChange={e => {
+          setPokemon(e.target.value)
+        }}
+        type="text"
+      />
+      Hello, {pokemon}!
+      <img src={img} />
+    </div>
+  )
+}
+
 ReactDOM.render(
   <div>
-    {/* Option 1 */}
-    <Button onPrint={printStuff}>
-      <FaStar /> Add
-    </Button>
-
-    {/* Option 2 */}
-    <Button children={<FaRegStar />} />
-
-    {/* Option 1 again */}
-    {/* By position */}
-    <Button>
-      Subtract <FaRegStar />
-    </Button>
+    <Pokemon />
   </div>,
   domElement
 )
