@@ -1,5 +1,9 @@
 import React from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import {
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom'
 
 import PrimaryHeader from 'YesterTech/PrimaryHeader'
 import PrimaryFooter from 'YesterTech/PrimaryFooter'
@@ -24,9 +28,36 @@ export default function PrimaryLayout() {
     <div className="primary-layout">
       <div>
         <PrimaryHeader />
-        <ProductSubNav />
+        <Route path="/products">
+          <ProductSubNav />
+        </Route>
+
         <main className="primary-content">
-          <Home />
+          <Switch>
+            <Route path="/" exact>
+              <Home />
+            </Route>
+            <Route path="/signup" exact>
+              <SignupForm />
+            </Route>
+            <Route path="/login" exact>
+              <LoginForm />
+            </Route>
+            <Route path="/products">
+              <ProductsLayout />
+            </Route>
+            {cart.length > 0 && (
+              <Route path="/checkout">
+                <Checkout />
+              </Route>
+            )}
+            {authenticated && (
+              <Route path="/account">
+                <Account />
+              </Route>
+            )}
+            <Redirect to="/" />
+          </Switch>
         </main>
         <PrimaryFooter />
       </div>
