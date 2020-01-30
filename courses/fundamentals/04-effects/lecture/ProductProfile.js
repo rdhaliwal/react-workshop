@@ -31,15 +31,18 @@ function useProduct(productId) {
   return product
 }
 
+function useDocumentTitle(titleVariable) {
+  useEffect(() => {
+    document.title = titleVariable
+  }, [titleVariable])
+}
+
 function ProductProfile() {
   let { productId } = useParams()
   productId = parseInt(productId, 10)
 
   let product = useProduct(productId)
-
-  useEffect(() => {
-    document.title = product?.name
-  }, [product])
+  useDocumentTitle(product?.name)
 
   // [populated] = effect runs whenever `populated` changes
   //               and also on mount

@@ -14,6 +14,46 @@ function add(x, y) {
   return x + y
 }
 
+// class ProductsSidebar extends React.Component {
+//   constructor(props) {
+//     super(props)
+//     this.state = {
+//       matches: window.matchMedia(
+//         '(min-width: 800px)'
+//       ),
+//     }
+//   }
+//   setup() {
+//     this.media = window.matchMedia(
+//       '(min-width: 800px)'
+//     )
+//     this.listener = () => {
+//       this.setState({
+//         matches: this.media.matches,
+//       })
+//     }
+//     this.media.addListener(this.listener)
+//   }
+//   cleanup() {
+//     this.media.removeListener(this.listener)
+//   }
+//   componentDidMount() {
+//     this.setup()
+//   }
+//   componentWillUnmount() {
+//     this.cleanup()
+//   }
+//   componentDidUpdate(prevProps) {
+//     if (prevProps !== this.props) {
+//       this.cleanup()
+//       this.setup()
+//     }
+//   }
+//   render() {
+//     ////// ...
+//   }
+// }
+
 function ProductsSidebar() {
   const [isWide, setIsWide] = useState(false)
 
