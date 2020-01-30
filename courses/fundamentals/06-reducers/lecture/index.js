@@ -10,7 +10,7 @@ function App() {
   // state: current state
   // dispatch: sends an action to React for the reducer
   const [state, dispatch] = useReducer(
-    (action, state) => {
+    (state, action) => {
       switch (action.type) {
         case 'AUTHENTICATED': {
           return { ...state, user: action.user }
