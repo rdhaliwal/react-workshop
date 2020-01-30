@@ -1,14 +1,17 @@
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
+import { ShoppingCartProvider } from './ShoppingCartState'
 
 import PrimaryLayout from './PrimaryLayout'
 import 'YesterTech/styles/global-styles.scss'
 
 function App() {
   return (
-    <BrowserRouter>
-      <PrimaryLayout />
-    </BrowserRouter>
+    <ShoppingCartProvider>
+      <BrowserRouter>
+        <PrimaryLayout />
+      </BrowserRouter>
+    </ShoppingCartProvider>
   )
 }
 

@@ -1,5 +1,9 @@
 import React from 'react'
-import { render, cleanup, wait } from '@testing-library/react'
+import {
+  render,
+  cleanup,
+  wait,
+} from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Mock modules
@@ -32,7 +36,9 @@ const mockProductResponse = {
   price: 10,
 }
 
-api.products.getProduct.mockResolvedValue(mockProductResponse)
+api.products.getProduct.mockResolvedValue(
+  mockProductResponse
+)
 
 /**
  * Tests

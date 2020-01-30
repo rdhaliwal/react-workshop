@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
+import { useShoppingCartState } from './ShoppingCartState'
+
 import { useProducts } from './utils'
 import BrowseProductItem from './BrowseProductItem'
 
-function BrowseProducts({
-  addToCart,
-  updateQuantity,
-  getQuantity,
-  getCartSize,
-}) {
+function BrowseProducts() {
+  let { getCartSize } = useShoppingCartState()
   const products = useProducts()
 
   return (
@@ -25,9 +23,6 @@ function BrowseProducts({
               name={product.name}
               price={product.price}
               imagePath={product.imagePath}
-              addToCart={addToCart}
-              getQuantity={getQuantity}
-              updateQuantity={updateQuantity}
             />
           )
         })}

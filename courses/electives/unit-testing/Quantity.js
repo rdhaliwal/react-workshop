@@ -1,6 +1,17 @@
 import React, { useState } from 'react'
 import { FaMinusCircle, FaPlusCircle } from 'react-icons/fa'
 
+// Static: Linting, TypeScript, PropTypes
+// Unit: Snapshot testing => Jest
+// Integration: React Testing Library, React Test Utils, Enzyme
+// End-to-testing: Cypress
+
+/*
+  cassidy@reacttraining.com
+  @cassidoo // Tweet us
+  @ReactTraining
+*/
+
 function Quantity() {
   const [quantity, setQuantity] = useState(0)
 
@@ -57,7 +68,12 @@ function Quantity() {
           />
         </div>
         <div>
-          <button onClick={add} type="button" className="icon-button" data-testid="add-button">
+          <button
+            onClick={add}
+            type="button"
+            className="icon-button"
+            data-testid="add-button"
+          >
             <FaPlusCircle />
           </button>
         </div>
