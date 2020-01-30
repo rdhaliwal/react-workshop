@@ -14,8 +14,12 @@ function CheckoutBilling({ onSubmit }) {
     const fields = {
       billingName,
       billingAddress,
-      shippingName: sameAsBilling ? billingName : shippingName,
-      shippingAddress: sameAsBilling ? billingAddress : shippingAddress,
+      shippingName: sameAsBilling
+        ? billingName
+        : shippingName,
+      shippingAddress: sameAsBilling
+        ? billingAddress
+        : shippingAddress,
     }
     onSubmit(sameAsBilling, fields)
   }
@@ -37,7 +41,9 @@ function CheckoutBilling({ onSubmit }) {
             type="text"
             required
             defaultValue={billingName}
-            onChange={event => setBillingName(event.target.value)}
+            onChange={event =>
+              setBillingName(event.target.value)
+            }
           />
         </div>
         <div className="form-field">
@@ -47,7 +53,9 @@ function CheckoutBilling({ onSubmit }) {
             type="text"
             required
             defaultValue={billingAddress}
-            onChange={event => setBillingAddress(event.target.value)}
+            onChange={event =>
+              setBillingAddress(event.target.value)
+            }
           />
         </div>
 
@@ -59,7 +67,9 @@ function CheckoutBilling({ onSubmit }) {
           <input
             type="checkbox"
             defaultChecked={sameAsBilling}
-            onChange={() => setSameAsBilling(!sameAsBilling)}
+            onChange={() =>
+              setSameAsBilling(!sameAsBilling)
+            }
           />{' '}
           Same as Billing
         </label>
@@ -72,8 +82,12 @@ function CheckoutBilling({ onSubmit }) {
             id="shipping:name"
             type="text"
             required
-            value={sameAsBilling ? billingName : shippingName}
-            onChange={event => setShippingName(event.target.value)}
+            value={
+              sameAsBilling ? billingName : shippingName
+            }
+            onChange={event =>
+              setShippingName(event.target.value)
+            }
             disabled={sameAsBilling}
           />
         </div>
@@ -83,8 +97,14 @@ function CheckoutBilling({ onSubmit }) {
             id="shipping:address"
             type="text"
             required
-            value={sameAsBilling ? billingAddress : shippingAddress}
-            onChange={event => setShippingAddress(event.target.value)}
+            value={
+              sameAsBilling
+                ? billingAddress
+                : shippingAddress
+            }
+            onChange={event =>
+              setShippingAddress(event.target.value)
+            }
             disabled={sameAsBilling}
           />
         </div>
