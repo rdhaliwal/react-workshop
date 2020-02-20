@@ -12,8 +12,37 @@ const products = [
   { id: 3, name: 'Nintendo NES', rating: 4, brand: 'Nintendo', condition: 'fair' },
 ]
 
+function StarRating({ rating }) {
+  const stars = []
+
+  for (let i = 0; i < Math.floor(rating); i++) {
+    stars.push(<FaStar />)
+  }
+
+  if (Math.floor(rating) < rating) {
+    stars.push(<FaStarHalfAlt />)
+  }
+
+  for (let i = Math.ceil(rating); i < 5; i++) {
+    stars.push(<FaRegStar />)
+  }
+
+  return <div className="star-rating">{stars}</div>
+}
+
 function BrowseProducts() {
-  return <div>{/* Exercise code goes here! */}</div>
+  return (
+    <div>
+      {products.map(product => {
+        return (
+          <div key={product.id}>
+            {product.name}
+            <StarRating rating={product.rating} />
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 ReactDOM.render(<BrowseProducts />, document.getElementById('root'))
