@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa'
+import { FaRegStar, FaStar, FaStarHalfAlt, FaStarAndCrescent } from 'react-icons/fa'
 import Heading from 'YesterTech/Heading'
 import 'YesterTech/StarRatings.scss'
 import 'YesterTech/styles/center-lesson.scss'
@@ -11,7 +11,7 @@ const products = [
   { id: 3, name: 'Nintendo NES', rating: 4, brand: 'Nintendo', condition: 'fair' },
 ]
 
-const StarRatings = ({ rating }) => {
+const StarRating = ({ rating }) => {
   const stars = []
 
   for (let i = 0; i < Math.floor(rating); i++) {
@@ -25,32 +25,34 @@ const StarRatings = ({ rating }) => {
   for (let i = Math.ceil(rating); i < 5; i++) {
     stars.push(<FaRegStar />)
   }
-
-  return <div className="star-rating">{stars}</div>
+  return <div>{stars}</div>
 }
 
-function Product({ product }) {
-  return (
-    <div key={product.id}>
-      <div>
-        <strong>Product:</strong> {product.name}
-      </div>
-      <div>
-        <strong>Brand:</strong> {product.brand}
-      </div>
-      <StarRatings rating={product.rating} />
-    </div>
-  )
-}
-
-function BrowseProducts() {
+const BrowseProducts = () => {
   return (
     <div>
       {products.map(product => {
-        return <Product product={product} key={product.id} />
+        return (
+          // Index is not great, as a key because when you have use cases where things are reordered,
+          // It'll kind of mess things up. But it's not the worst thing in the world
+          <div key={product.id}>
+            {product.name}
+            <StarRating rating={product.rating} />
+          </div>
+        )
       })}
     </div>
   )
 }
 
 ReactDOM.render(<BrowseProducts />, document.getElementById('root'))
+
+const someElement = React.createElement(
+  'button',
+  {
+    style: { fontWeight: 'bold' },
+  },
+  'Hello world'
+)
+
+const equivalentElement = <button style={{ fontWeight: 'bold' }}>Hello world</button>
