@@ -214,6 +214,49 @@ Custom hooks:
 
 - `useReducer` docs: https://reactjs.org/docs/hooks-reference.html#usereducer
 
+### My notes
+
+- Redux can be thought of like this:
+  - Your app is just one big state, or object.
+  - We incrementally change this state
+  - We take in new changes, and take the existing state, and create a new state out of it.
+  - Simple
+
+Basic useReducer example:
+
+```js
+const initialState = {
+  user: null
+}
+
+// Notice that this outside of the component
+// Making this easier to test.
+function loginReducer(state, action) {
+  if (action.type === 'AUTHENTICATED') {
+    return {
+      ...state,
+      user: action.user,
+    }
+  }
+
+  return state
+}
+
+const App = () => {
+  const [state, dispatch] = useReducer(loginReducer, initialState);
+  return (
+     <LoginForm onAuthenticated={resultUser => {
+        // This invokes the loginReducer
+        dispatch({
+          type: 'AUTHENTICATED',
+          user: resultUser,
+        })
+      }}
+    />
+  );
+}
+```
+
 ---
 
 ## Lesson 7: Data Flow
@@ -229,6 +272,11 @@ Custom hooks:
 
 - Docs on "Lifting State": https://reactjs.org/docs/lifting-state-up.html
 - `useContext` docs: https://reactjs.org/docs/hooks-reference.html#usecontext
+
+### My Notes:
+
+- useContext.
+
 
 ---
 

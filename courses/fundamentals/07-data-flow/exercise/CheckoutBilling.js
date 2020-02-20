@@ -1,9 +1,10 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Columns, Column } from 'react-flex-columns'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
 import { MdShoppingCart } from 'react-icons/md'
 import Heading from 'YesterTech/Heading'
+import { BillingContext } from './Checkout'
 
 function CheckoutBilling({ onSubmit }) {
   const [state, dispatch] = useReducer(
@@ -24,7 +25,9 @@ function CheckoutBilling({ onSubmit }) {
       shippingName: '',
       shippingAddress: '',
     }
-  )
+  );
+
+  const billingState = useContext(BillingContext);
 
   const { sameAsBilling, billingName, billingAddress, shippingName, shippingAddress } = state
 

@@ -1,47 +1,74 @@
-import React, { useState, useReducer } from 'react'
+import React, { useState, useReducer, useContext, createContext } from 'react'
 import { Switch, Route, Redirect, useRouteMatch, useHistory } from 'react-router-dom'
 import Centered from 'YesterTech/Centered'
 
-// To run the final solution: Comment this in and the rest out
-// import Checkout from './Checkout.final'
-// export default Checkout
-
-// Route Targets
 import ViewCart from 'YesterTech/ViewCart'
 import CheckoutBilling from './CheckoutBilling'
 import CheckoutReview from 'YesterTech/CheckoutReview'
 
-function Checkout() {
-  const match = useRouteMatch()
-  const history = useHistory()
+export const BillingContext = createContext();
 
-  function handleBillingSubmit(sameAsBilling, fields) {
-    console.log(sameAsBilling, fields)
-    history.push(`${match.path}/review`)
+const initialState = {
+  sameAsBilling: false,
+  fields: [],
+};
+
+const updateState = (state, action) => {
+  switch (action.type) {
+    case 'UPDATE_SAME_AS_BILLING':
+      return { ...state, sameAsBilling: action.sameAsBilling }
+    case 'UPDATE_FIELDS':
+      return { ...state, fields: action.fields }
+    case 'UPDATE_BOTH':
+      return { ...state, fields: action.fields, sameAsBilling: action.sameAsBilling }
+    default:
+      return state
   }
+};
+
+const Checkout = () => {
+  const match = useRouteMatch();
+  const history = useHistory();
+
+  const [state, dispatch] = useReducer(updateState, initialState);
+  const { fields, sameAsBilling } = state;
+
+  console.log('fields', JSON.stringify(fields, null, 2));
+  console.log('sameAsBilling', JSON.stringify(sameAsBilling, null, 2));
+
+  const handleBillingSubmit = (sameAsBilling, fields) => {
+    console.log(sameAsBilling, fields);
+    dispatch({ type: 'UPDATE_SAME_AS_BILLING', sameAsBilling });
+    dispatch({ type: 'UPDATE_FIELDS', fields });
+    history.push(`${match.path}/review`);
+  };
 
   return (
-    <Centered>
-      <Switch>
-        <Route path={`${match.path}/cart`} exact>
-          <ViewCart />
-        </Route>
-        <Route path={`${match.path}/billing`}>
-          <CheckoutBilling onSubmit={handleBillingSubmit} />
-        </Route>
+    <BillingContext.Provider value={{ fields, sameAsBilling }}>
+      <Centered>
+        <Switch>
+          <Route path={`${match.path}/cart`} exact>
+            <ViewCart />
+          </Route>
+          <Route path={`${match.path}/billing`}>
+            <CheckoutBilling onSubmit={handleBillingSubmit} />
+          </Route>
 
-        {/*
-          Hint: We shouldn't be able to visit this route unless we have
-          values inside of our state for `fields`. See the README
-        */}
-        <Route path={`${match.path}/review`}>
-          {/* The README also tells you what props you need to pass into CheckoutReview */}
-          <CheckoutReview />
-        </Route>
+          {
+            Object.keys(fields).length > 0 && (
+              <Route path={`${match.path}/review`}>
+                <CheckoutReview
+                  fields={fields}
+                  sameAsBilling={sameAsBilling}
+                />
+              </Route>
+            )
+          }
 
-        <Redirect to={`${match.path}/cart`} />
-      </Switch>
-    </Centered>
+          <Redirect to={`${match.path}/cart`} />
+        </Switch>
+      </Centered>
+    </BillingContext.Provider>
   )
 }
 
