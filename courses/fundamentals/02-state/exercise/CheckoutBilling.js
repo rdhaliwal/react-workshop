@@ -4,7 +4,7 @@ import serializeForm from 'form-serialize'
 import Heading from 'YesterTech/Heading'
 
 function CheckoutBilling({ onSubmit }) {
-  const [sameAsBilling, setSameAsBilling] = useState(false)
+  const [sameAsBilling, setSameAsBilling] = useState(true);
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -38,24 +38,26 @@ function CheckoutBilling({ onSubmit }) {
         <label>
           <input
             type="checkbox"
+            onChange={() => setSameAsBilling(s => !s)}
             defaultChecked={sameAsBilling}
-            onChange={() => setSameAsBilling(!sameAsBilling)}
-          />{' '}
+          />
           Same as Billing
         </label>
 
-        {sameAsBilling ? (
-          <div className="spacing">
-            <div className="form-field">
-              <label htmlFor="shipping:name">Name</label>
-              <input id="shipping:name" type="text" name="shippingName" autoComplete="off" />
+        {
+          sameAsBilling && (
+            <div className="spacing">
+              <div className="form-field">
+                <label htmlFor="shipping:name">Name</label>
+                <input id="shipping:name" type="text" name="shippingName" autoComplete="off" />
+              </div>
+              <div className="form-field">
+                <label htmlFor="shipping:address">Address</label>
+                <input id="shipping:address" type="text" name="shippingAddress" autoComplete="off" />
+              </div>
             </div>
-            <div className="form-field">
-              <label htmlFor="shipping:address">Address</label>
-              <input id="shipping:address" type="text" name="shippingAddress" autoComplete="off" />
-            </div>
-          </div>
-        ) : null}
+          )
+        }
 
         <footer>
           <button type="submit" className="button">

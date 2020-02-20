@@ -14,6 +14,10 @@ The workshop has lectures followed by exercises. The exercises are your chance t
 - In a typical React application, `ReactDOM.render()` is only used once. As React changes our JSX responses from our components, React will also take care of updating the DOM to reflect those JSX changes.
 - A function that returns JSX is a "component" in React. There are also older ways of creating components with classes. Function-based and class-based components can intermingle in the same app.
 
+
+
+
+
 Docs: https://reactjs.org/docs/introducing-jsx.html
 
 JSX Confusing Parts: https://reacttraining.com/blog/jsx-the-confusing-parts/
@@ -34,6 +38,34 @@ JSX Confusing Parts: https://reacttraining.com/blog/jsx-the-confusing-parts/
   - React takes the previously returned JSX and the new JSX and finds the differences (called a diff). Only the things that are different are used to change the real DOM. This makes React very fast.
 
 Docs: https://reactjs.org/docs/hooks-state.html
+
+My Notes:
+
+- You can use a function that gets the current value if you need it to manipulate the state
+```
+const [quantity, setQuantity] = useState(1);
+setQuantity(q => q - 1);
+setQuantity(quantity + 1)
+```
+It's preferred to do the `q => q+1` way, because the `quantity +1` could be stale.
+A stale value could happen if you're within a promise or a useEffect or something async.
+
+- Ways to hide elements:
+someBoolean && <div />
+someBoolean ? <div /> : null
+<div hidden={someBoolean || undefined} />
+  > This still renders in the DOM (but hidden to screenreaders and stuff)
+  > But because it's in the DOM, we can use CSS. Useful for animations
+  > e.g
+  >    div { opacity : 1}
+  >    div > hidden { opacity : 0 }
+
+- How does useState actually work under the hood:
+  - It keeps track of each hook called within a component
+  - It's essentially an array of all the hooks and their values within a React components
+    - This is why hooks only work within components, React is tracking this array.
+  - This is why you can't have hooks within if/for conditions, or early returns.
+  - This is called the 'Rules of hooks' within the React docs
 
 ---
 
