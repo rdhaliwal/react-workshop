@@ -1,12 +1,12 @@
 # Notes for Instructor
 
-We can make that quantity value stateful by introducing useState. When we click the
-buttons, React calls `Quantity()` again, compares the element we returned last
-time with the element we've returned this time. React is tracking the old
+We can make that quantity value stateful by introducing useState. When we click
+the buttons, React calls `Quantity()` again, compares the element we returned
+last time with the element we've returned this time. React is tracking the old
 and new elements for us, as well as the current state. When it finds a
-difference between the old and new element, it updates the DOM with the
-minimal set of changes required and leaves the rest alone. We can watch it
-in the browser dev tools.
+difference between the old and new element, it updates the DOM with the minimal
+set of changes required and leaves the rest alone. We can watch it in the
+browser dev tools.
 
 ```jsx
 export default function Quantity() {
@@ -19,13 +19,13 @@ export default function Quantity() {
     <div className="quantity-picker">
       <div>
         <div>
-          <button type="button" className="icon-button" onClick={handleAdd}>
+          <button type="button" className="icon-button" onClick={handleSubtract}>
             <FaMinusCircle />
           </button>
         </div>
         <div className="input-container">{quantity}</div>
         <div>
-          <button type="button" className="icon-button" onClick={handleSubtract}>
+          <button type="button" className="icon-button" onClick={handleAdd}>
             <FaPlusCircle />
           </button>
         </div>
@@ -35,8 +35,8 @@ export default function Quantity() {
 }
 ```
 
-We get to decide when to change state and when not to,
-maybe we only want positive values.
+We get to decide when to change state and when not to, maybe we only want
+positive values.
 
 ```jsx
 const handleSubtract = () => {
@@ -44,8 +44,8 @@ const handleSubtract = () => {
 }
 ```
 
-We can add multiple states, like an error state when they try to use an
-invalid value. You can use && like an "if" inside of JSX.
+We can add multiple states, like an error state when they try to use an invalid
+value. You can use && like an "if" inside of JSX.
 
 ```jsx
 export default function Quantity() {
@@ -67,13 +67,13 @@ export default function Quantity() {
     <div className="quantity-picker">
       <div>
         <div>
-          <button type="button" className="icon-button" onClick={handleAdd}>
+          <button type="button" className="icon-button" onClick={handleSubtract}>
             <FaMinusCircle />
           </button>
         </div>
         <div className="input-container">{quantity}</div>
         <div>
-          <button type="button" className="icon-button" onClick={handleSubtract}>
+          <button type="button" className="icon-button" onClick={handleAdd}>
             <FaPlusCircle />
           </button>
         </div>

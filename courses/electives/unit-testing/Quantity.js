@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FaMinusCircle, FaPlusCircle } from 'react-icons/fa'
 
 function Quantity() {
   const [quantity, setQuantity] = useState(0)
+
+  useEffect(() => {
+    console.log(quantity)
+  }, [quantity])
 
   function subtract() {
     if (quantity > 0) {
@@ -57,7 +61,12 @@ function Quantity() {
           />
         </div>
         <div>
-          <button onClick={add} type="button" className="icon-button" data-testid="add-button">
+          <button
+            onClick={add}
+            type="button"
+            className="icon-button"
+            data-testid="add-button"
+          >
             <FaPlusCircle />
           </button>
         </div>

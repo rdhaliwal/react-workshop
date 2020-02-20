@@ -17,10 +17,7 @@ function PrimaryHeader() {
   const { getCartSize } = useShoppingCart()
   const cartSize = getCartSize()
 
-  function handleLogout() {
-    // api.auth.logout().then(() => {
-    // })
-  }
+  function handleLogout() {}
 
   return (
     <div className="primary-header">

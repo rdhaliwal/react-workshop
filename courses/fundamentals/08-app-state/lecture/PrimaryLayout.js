@@ -22,10 +22,14 @@ function PrimaryLayout() {
   const { cart } = useShoppingCart()
   const { authenticated, dispatch } = useAuthState()
 
-  // Get the current authenticated user (for first loads and refreshes)
   useEffect(() => {
-    // api.auth.getAuthenticatedUser().then(user => {})
-  }, [])
+    // check if the use is auth'd or not
+    if (!authenticated) {
+      api.auth.getAuthenticatedUser().then(user => {
+        if (user) dispatch({ type: 'LOGIN', user })
+      })
+    }
+  }, [authenticated, dispatch])
 
   return (
     <div className="primary-layout">
@@ -40,22 +44,10 @@ function PrimaryLayout() {
               <Home />
             </Route>
             <Route path="/signup" exact>
-              <SignupForm
-                onSignup={user => {
-                  // dispatch login so the frontend is aware
-                  // then redirect:
-                  history.push('/')
-                }}
-              />
+              <SignupForm />
             </Route>
             <Route path="/login" exact>
-              <LoginForm
-                onAuthenticated={user => {
-                  // dispatch login so the frontend is aware
-                  // then redirect:
-                  history.push('/')
-                }}
-              />
+              <LoginForm />
             </Route>
             <Route path="/products">
               <ProductsLayout />
