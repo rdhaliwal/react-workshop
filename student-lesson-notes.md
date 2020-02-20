@@ -81,6 +81,19 @@ someBoolean ? <div /> : null
 
 - Docs: https://reactjs.org/docs/uncontrolled-components.html
 
+My Notes:
+
+- Uncontrolled: the initial value is set by React, but after that, React can't/won't update it.
+- Controlled: React sets the initial value, and any subsequent values.
+- If you set a value on an input in React, generally React complains because you're not making a controlled component. So give it an onChange handler and it becomes a controlled component.
+
+- Having objects for useState (mimicking this.setState)
+  - If we have a single `const [everything, setEverything]`, it means that when we call `setEverything`
+  - It will literally override it to anything you give it. i.e. setEverything({ address: 'yarp'})
+  - So we'd need to spread the existing value, i.e. setEverything(e => ({ ...e, address: 'yarp' }))
+  - Depending on the usage, can get messy. Probably depends on the context on how you use it.
+
+
 ---
 
 ## Lesson 4: Effects
