@@ -13,6 +13,7 @@ import { useShoppingCart } from 'YesterTech/ShoppingCartState'
 import ProductTile from 'YesterTech/ProductTile'
 
 function ProductProfile() {
+  // Boom shaka laka, react-router hook!
   let { productId } = useParams()
   productId = parseInt(productId, 10)
 

@@ -14,10 +14,6 @@ The workshop has lectures followed by exercises. The exercises are your chance t
 - In a typical React application, `ReactDOM.render()` is only used once. As React changes our JSX responses from our components, React will also take care of updating the DOM to reflect those JSX changes.
 - A function that returns JSX is a "component" in React. There are also older ways of creating components with classes. Function-based and class-based components can intermingle in the same app.
 
-
-
-
-
 Docs: https://reactjs.org/docs/introducing-jsx.html
 
 JSX Confusing Parts: https://reacttraining.com/blog/jsx-the-confusing-parts/
@@ -39,7 +35,7 @@ JSX Confusing Parts: https://reacttraining.com/blog/jsx-the-confusing-parts/
 
 Docs: https://reactjs.org/docs/hooks-state.html
 
-My Notes:
+### My Notes:
 
 - You can use a function that gets the current value if you need it to manipulate the state
 ```
@@ -81,7 +77,7 @@ someBoolean ? <div /> : null
 
 - Docs: https://reactjs.org/docs/uncontrolled-components.html
 
-My Notes:
+### My Notes:
 
 - Uncontrolled: the initial value is set by React, but after that, React can't/won't update it.
 - Controlled: React sets the initial value, and any subsequent values.
@@ -92,7 +88,6 @@ My Notes:
   - It will literally override it to anything you give it. i.e. setEverything({ address: 'yarp'})
   - So we'd need to spread the existing value, i.e. setEverything(e => ({ ...e, address: 'yarp' }))
   - Depending on the usage, can get messy. Probably depends on the context on how you use it.
-
 
 ---
 
@@ -141,6 +136,58 @@ useEffect(() => {
 - Docs: "Using the Effect Hook": https://reactjs.org/docs/hooks-effect.html
 - A very long but complete guide to useEffect: https://overreacted.io/a-complete-guide-to-useeffect/
 
+### My Notes:
+
+- `const media = window.matchMedia('min-width: 800px')`
+- console.log(media);
+
+```
+const [isWide, setIsWide] = useState(false)
+
+useEffect(() => {
+  const media = window.matchMedia('(min-width: 800px)')
+
+  const listener = () => {
+    setIsWide(media.matches) // true if >= 800px
+  }
+  media.addListener(listener)
+
+  return () => {
+    // componentDidUnmount equivalent-ish
+  }
+}, [ /* dependency array */ ]);
+
+console.log('Is wide?', isWide)
+```
+
+- empty dependency array = runs the effect _only_ once, on mount // componentDidMount equivalent
+- If you forget to put it in a dependecny array _at all_, then it reruns the effect _every time_.
+
+Network requests and useEffect:
+- If you have an effect, that makes an API call, and that component is unmounted (i.e. you navigate away from the page), the effect will complain, because it's trying to set state on a non existant component
+- You need to track the state of the API call, and cancel the promise in the cleanup effect function
+```
+useEffect(() => {
+  let canceled = false
+
+  api.products.getProduct(productId).then(product => {
+    if (canceled) return null;
+    setProduct(product)
+  })
+
+  return () => { canceled = true }
+}, []);
+```
+
+Custom hooks:
+- _need_ to start with `use`.
+- That's literally how react tracks hooks.
+
+>>> Do I have to name my custom Hooks starting with “use”? Please do. This convention is very important. Without it, we wouldn’t be able to automatically check for violations of rules of Hooks because we couldn’t tell if a certain function contains calls to Hooks inside of it.
+- https://reactjs.org/docs/hooks-custom.html#extracting-a-custom-hook
+
+- It calls the destructor first, then the useffect. so it tears down the old effect, then adds/runs the new one.
+- Clean ups are a good idea if you have some kind of subscription or async thing. otherwise, good potential for memory leaks.
 ---
 
 ## Lesson 5: Routing
