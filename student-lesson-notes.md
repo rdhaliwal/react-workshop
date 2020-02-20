@@ -47,14 +47,16 @@ It's preferred to do the `q => q+1` way, because the `quantity +1` could be stal
 A stale value could happen if you're within a promise or a useEffect or something async.
 
 - Ways to hide elements:
+```
 someBoolean && <div />
 someBoolean ? <div /> : null
 <div hidden={someBoolean || undefined} />
-  > This still renders in the DOM (but hidden to screenreaders and stuff)
-  > But because it's in the DOM, we can use CSS. Useful for animations
-  > e.g
-  >    div { opacity : 1}
-  >    div > hidden { opacity : 0 }
+```
+\> This still renders in the DOM (but hidden to screenreaders and stuff)
+\> But because it's in the DOM, we can use CSS. Useful for animations
+\> e.g
+\>    div { opacity : 1}
+\>    div > hidden { opacity : 0 }
 
 - How does useState actually work under the hood:
   - It keeps track of each hook called within a component
@@ -193,6 +195,15 @@ Custom hooks:
 ## Lesson 5: Routing
 
 // TODO
+
+### My Notes:
+
+- Switch - the if/else type thingy for the router. Picks the first match, so order is important
+- Route - url matches to a thing, then renders the given child component.
+- The react-router-dom API Docs are pretty good about this.
+  - https://reacttraining.com/react-router/web/guides/quick-start
+- React router has hooks now.
+- https://codesandbox.io/s/optimistic-flower-xeczx
 
 ---
 

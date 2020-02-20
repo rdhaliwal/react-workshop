@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom'
 
 import PrimaryHeader from 'YesterTech/PrimaryHeader'
 import PrimaryFooter from 'YesterTech/PrimaryFooter'
@@ -20,13 +20,51 @@ export default function PrimaryLayout() {
   const { authenticated } = useAuthState()
   const { cart } = useShoppingCart()
 
+  const match = useRouteMatch();
+
   return (
     <div className="primary-layout">
       <div>
         <PrimaryHeader />
-        <ProductSubNav />
+        {
+          // match.path === 'products' && (
+          //   <ProductSubNav />
+          // )
+        }
+        <Route path="/products">
+          <ProductSubNav />
+        </Route>
         <main className="primary-content">
-          <Home />
+          <Switch>
+            <Route path="/" exact>
+              <Home />
+            </Route>
+            <Route path="/signup" exact>
+              <SignupForm />
+            </Route>
+            <Route path="/login" exact>
+              <LoginForm />
+            </Route>
+            <Route path="/products" exact>
+              <ProductsLayout />
+            </Route>
+            {
+              authenticated && (
+                <Route path="/account" exact>
+                  <Account />
+                </Route>
+              )
+            }
+             {
+              (cart.length > 0) && (
+                <Route path="/cart" exact>
+                  <Checkout />
+                </Route>
+              )
+            }
+
+            <Redirect to='/' />
+          </Switch>
         </main>
         <PrimaryFooter />
       </div>
