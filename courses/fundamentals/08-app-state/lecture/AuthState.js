@@ -7,6 +7,7 @@ const initialState = {
   user: null,
 }
 
+
 export function AuthStateProvider({ children }) {
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
@@ -26,9 +27,11 @@ export function AuthStateProvider({ children }) {
     dispatch,
   }
 
+  // This is a really nice patter for hooks and contexts
   return <AuthStateContext.Provider value={value} children={children} />
 }
 
+// This is a really nice patter for hooks and contexts
 export function useAuthState() {
   return useContext(AuthStateContext)
 }
