@@ -275,8 +275,42 @@ const App = () => {
 
 ### My Notes:
 
-- useContext.
+Move this to Notion
 
+```js
+import React, { useState, useContext, createContext } from 'react'
+
+const TabsContext = createContext();
+
+function TabPanels({ data }) {
+  const { activeIndex } = useContext(TabsContext);
+
+  return <div data-reach-tab-panels>{data[activeIndex].content}</div>
+}
+
+function Tab({ index, children }) {
+  const { activeIndex, setActiveIndex } = useContext(TabsContext);
+  const isActive = index === activeIndex
+
+  return (
+    <div onClick={() => (!isDisabled ? setActiveIndex(index) : {})}>
+      {children}
+    </div>
+  )
+}
+
+function Tabs({ data, position = 'top', disabled = [] }) {
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  return (
+    <div data-reach-tabs>
+      <TabsContext.Provider value={{ activeIndex, setActiveIndex }} >
+        <TabPanels data={data} />
+      </TabsContext.Provider>
+    </div>
+  )
+}
+```
 
 ---
 
@@ -293,3 +327,62 @@ const App = () => {
 - When you want to make your own hook, that just means wrapping React hooks with your code together. Writing generic hooks that can encapsulate logic that you often re-write (for example, a `useEffect` with a basic cleanup function) is a great way to clean up your components.
 
 - `useCallback` docs: https://reactjs.org/docs/hooks-reference.html#usecallback
+
+
+UseCallback demo:
+
+```js
+import React, { useState, useEffect, useCallback } from 'react'
+
+// api is a function that returns a promise
+function useApi(api) {
+  const [response, setResponse] = useState(null)
+
+  useEffect(() => {
+    let canceled = false
+
+    api().then(res => {
+      if (canceled) return
+      console.log('Not canceled, making API call!', Date.now())
+      setResponse(res)
+    })
+
+    return () => { canceled = true }
+  }, [api])
+
+  return response
+}
+
+function ProductProfile({ productId }) {
+  const getProduct = useCallback(() => api.products.getProduct(productId), [productId])
+  const product = useApi(getProduct)
+
+  return (
+    <div>
+      <Heading>{product.name}</Heading>
+    </div>
+  )
+}
+```
+
+
+UseMemo demo:
+same thing as effect and cllback, only runs once and when dep array changes
+
+```js
+  const something = useMemo(() => {
+    let sum = 0;
+
+    for (const i = 0; i < 10000; i++) {
+      sum += i
+    }
+
+    return sum
+  }, [])
+ ```
+
+
+useMemo and useCallback
+ - You can technically use both, they do the same thing
+ - Just useCallback means once less nested function.
+ - Probably just best to useMemo for a single value, and useCallback is for a single function
